@@ -14,3 +14,11 @@ Requirements:
 4. Users can see changes in real-time when any other user
 adds or removes a stocks. The will be accomplished with the
 use of Web Sockets
+
+=====================================================================
+
+Stock Data Provided by:
+
+Alpha Vantage Api (https://www.alphavantage.co/)
+
+https://www.alphavantage.co/documentation/

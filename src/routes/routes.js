@@ -11,15 +11,19 @@ module.exports = function(app, env, passport) {
 	app.use(bodyParser.json());
 
 	app.get('/', function(req, res) {
-		console.log("home route");
 		res.render('pages/index');
 	});
 
+	// Sample call: https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&outputsize=full&apikey=demo
 	app.get('/getStockData', function(req, res) {
 		var apiBaseUrl = 'https://www.alphavantage.co/query?';
 		var timeSeriesType = 'TIME_SERIES_DAILY';
 		var apiOutputSize = 'compact'
 		var stockSymbol = 'MSFT'; // TODO: Get this dynamically from user
+
+		var resultDataType = 'Time Series (Daily)';
+		var stockDataFieldName = '4. close';
+		var numOfDays = 10; // Get stock data from last 10 days
 
 		var apiFullUrl = 
 			apiBaseUrl 
@@ -33,7 +37,17 @@ module.exports = function(app, env, passport) {
 				console.log(err);
 			}
 			else {
-				console.log(result);
+				var resultArr = [];
+				var dailyStockData = result.body[resultDataType];
+				var stockDataKeys = Object.keys(dailyStockData);
+				
+				for(var i = 0; i < numOfDays; i++) {
+					resultArr.push(dailyStockData[stockDataKeys[i]][stockDataFieldName]);
+				}
+				console.log(resultArr);
+				res.render('pages/index', {
+					stockData: resultArr
+				});
 			}
 		});
 	});

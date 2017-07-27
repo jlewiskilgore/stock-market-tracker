@@ -11,15 +11,18 @@ module.exports = function(app, env, passport) {
 	app.use(bodyParser.json());
 
 	app.get('/', function(req, res) {
-		res.render('pages/index');
+		res.render('pages/index', {
+			searchError: ''
+		});
 	});
 
 	// Sample call: https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&outputsize=full&apikey=demo
-	app.get('/getStockData', function(req, res) {
+	app.post('/getStockData', function(req, res) {
 		var apiBaseUrl = 'https://www.alphavantage.co/query?';
 		var timeSeriesType = 'TIME_SERIES_DAILY';
 		var apiOutputSize = 'compact'
-		var stockSymbol = 'MSFT'; // TODO: Get this dynamically from user
+		var stockSymbol = req.body.searchStockSymbol; // TODO: Get this dynamically from user
+		console.log(stockSymbol);
 
 		var resultDataType = 'Time Series (Daily)';
 		var stockDataFieldName = '4. close';
@@ -38,15 +41,25 @@ module.exports = function(app, env, passport) {
 			}
 			else {
 				var resultArr = [];
+				var errorMessage;
 				var dailyStockData = result.body[resultDataType];
-				var stockDataKeys = Object.keys(dailyStockData);
-				
-				for(var i = 0; i < numOfDays; i++) {
-					resultArr.push(dailyStockData[stockDataKeys[i]][stockDataFieldName]);
+
+				if(dailyStockData) {
+					var stockDataKeys = Object.keys(dailyStockData);
+					
+					for(var i = 0; i < numOfDays; i++) {
+						resultArr.push(dailyStockData[stockDataKeys[i]][stockDataFieldName]);
+					}
+					console.log(resultArr);
 				}
-				console.log(resultArr);
+				else {
+					console.log("No Data Found for Symbol: " + stockSymbol);
+					errorMessage = "No Data Found for Symbol: " + stockSymbol;
+				}
+
 				res.render('pages/index', {
-					stockData: resultArr
+					stockData: resultArr,
+					searchError: errorMessage
 				});
 			}
 		});

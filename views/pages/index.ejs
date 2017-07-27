@@ -6,8 +6,12 @@
 <body>
 	<h1 id="page-title">Stock Market Tracker App</h1>
 
-	<form id="test-stock-data" action="/getStockData" method="get">
+	<form id="search-stock-data" action="/getStockData" method="post">
+		<input id="stock-symbol" name="searchStockSymbol" type="text">
 		<input type="submit" value="Get Stock Data">
 	</form>
+	<% if(searchError) { %>
+		<p><%= searchError %></p>
+	<% } %>
 </body>
 </html>

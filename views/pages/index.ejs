@@ -2,6 +2,7 @@
 <head>
 	<title>Stock Market Tracker App</title>
 	<link rel="stylesheet" href="/stylesheets/style.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.js"></script>
 </head>
 <body>
 	<h1 id="page-title">Stock Market Tracker App</h1>
@@ -13,5 +14,28 @@
 	<% if(searchError) { %>
 		<p><%= searchError %></p>
 	<% } %>
+	
+	<div id="stock-chart"></svg>
+
+	<script>
+		data = [1, 2, 3]; // FOR TESTING, TODO: Use Stock Data
+
+		var svg = d3.select('#stock-chart')
+			.append('svg')
+				.attr('height', 100)
+				.attr('width', 500);
+
+		svg.selectAll('circle')
+			.data(data)
+			.enter()
+				.append('circle')
+				.attr('cx', function(d, i) {
+					return (i + 1) * 100 - 50;
+				})
+				.attr('cy', svg.attr('height') / 2)
+				.attr('r', function(d) {
+					return d * 5;
+				});
+	</script>
 </body>
 </html>

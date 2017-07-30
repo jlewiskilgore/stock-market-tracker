@@ -18,24 +18,27 @@
 	<div id="stock-chart"></svg>
 
 	<script>
-		data = [1, 2, 3]; // FOR TESTING, TODO: Use Stock Data
+		<% if(stockData) { %>
+			var data = [<%= stockData %>];
 
-		var svg = d3.select('#stock-chart')
-			.append('svg')
-				.attr('height', 100)
-				.attr('width', 500);
+			var svg = d3.select('#stock-chart')
+				.append('svg')
+					.attr('height', 100)
+					.attr('width', 500);
 
-		svg.selectAll('circle')
-			.data(data)
-			.enter()
-				.append('circle')
-				.attr('cx', function(d, i) {
-					return (i + 1) * 100 - 50;
-				})
-				.attr('cy', svg.attr('height') / 2)
-				.attr('r', function(d) {
-					return d * 5;
-				});
+			svg.selectAll('circle')
+				.data(data)
+				.enter()
+					.append('circle')
+					.attr('cx', function(d, i) {
+						return (i * 50);
+					})
+					.attr('cy', function(d, i) {
+						console.log(data[i]);
+						return data[i] / 10;
+					})
+					.attr('r', 10);
+		<% } %>
 	</script>
 </body>
 </html>

@@ -12,6 +12,7 @@ module.exports = function(app, env, passport) {
 
 	app.get('/', function(req, res) {
 		res.render('pages/index', {
+			stockData: [],
 			searchError: ''
 		});
 	});

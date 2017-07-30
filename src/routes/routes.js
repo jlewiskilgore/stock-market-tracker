@@ -11,8 +11,9 @@ module.exports = function(app, env, passport) {
 	app.use(bodyParser.json());
 
 	app.get('/', function(req, res) {
+		var appStockData = req.app.locals.stockData;
 		res.render('pages/index', {
-			stockData: [],
+			stockData: appStockData,
 			searchError: ''
 		});
 	});
@@ -22,8 +23,7 @@ module.exports = function(app, env, passport) {
 		var apiBaseUrl = 'https://www.alphavantage.co/query?';
 		var timeSeriesType = 'TIME_SERIES_DAILY';
 		var apiOutputSize = 'compact'
-		var stockSymbol = req.body.searchStockSymbol; // TODO: Get this dynamically from user
-		console.log(stockSymbol);
+		var stockSymbol = req.body.searchStockSymbol;
 
 		var resultDataType = 'Time Series (Daily)';
 		var stockDataFieldName = '4. close';
@@ -52,6 +52,7 @@ module.exports = function(app, env, passport) {
 						resultArr.push(dailyStockData[stockDataKeys[i]][stockDataFieldName]);
 					}
 					console.log(resultArr);
+					req.app.locals.stockData = resultArr;
 				}
 				else {
 					console.log("No Data Found for Symbol: " + stockSymbol);

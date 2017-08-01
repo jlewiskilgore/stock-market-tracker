@@ -24,6 +24,12 @@ module.exports = function(app, env, passport) {
 		var timeSeriesType = 'TIME_SERIES_DAILY';
 		var apiOutputSize = 'compact'
 		var stockSymbol = req.body.searchStockSymbol;
+		var stockSymbolArr = req.app.locals.stockSymbols || [];
+
+		if(!stockSymbolArr.includes(stockSymbol)) {
+			stockSymbolArr.push(stockSymbol);
+			req.app.locals.stockSymbols = stockSymbolArr;
+		}
 
 		var resultDataType = 'Time Series (Daily)';
 		var stockDataFieldName = '4. close';
@@ -60,6 +66,7 @@ module.exports = function(app, env, passport) {
 				}
 
 				res.render('pages/index', {
+					stockSymbols: stockSymbolArr,
 					stockData: resultArr,
 					searchError: errorMessage
 				});

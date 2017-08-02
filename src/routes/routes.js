@@ -4,6 +4,7 @@ var session = require('express-session');
 var https = require('https');
 var request = require('request');
 var config = require('../../config.js');
+var StockCtrl = require('../controllers/stockController.js');
 
 module.exports = function(app, env, passport) {
 	app.use(bodyParser.urlencoded({ extended: true }));
@@ -69,10 +70,13 @@ module.exports = function(app, env, passport) {
 						data: resultArr
 					};
 
-					// TODO: Check is stock obj already exists in array
-					stockArr.push(stockObj);
-					req.app.locals.stocks = stockArr;
-					console.log(stockArr);
+					StockCtrl.getStockIndex(req, stockSymbol, stockArr, function(resultIndex) {
+						// resultIndex = -1 means stock is not in array
+						if(resultIndex < 0) {
+							stockArr.push(stockObj);
+							req.app.locals.stocks = stockArr;
+						}
+					});
 				}
 				else {
 					console.log("No Data Found for Symbol: " + stockSymbol);

@@ -12,7 +12,9 @@ module.exports = function(app, env, passport) {
 
 	app.get('/', function(req, res) {
 		var appStockData = req.app.locals.stockData;
+		var appStocks = req.app.locals.stocks;
 		res.render('pages/index', {
+			stocks: appStocks,
 			stockData: appStockData,
 			searchError: ''
 		});
@@ -25,6 +27,7 @@ module.exports = function(app, env, passport) {
 		var apiOutputSize = 'compact'
 		var stockSymbol = req.body.searchStockSymbol;
 		var stockSymbolArr = req.app.locals.stockSymbols || [];
+		var stockArr = req.app.locals.stocks || [];
 
 		if(!stockSymbolArr.includes(stockSymbol)) {
 			stockSymbolArr.push(stockSymbol);
@@ -50,6 +53,7 @@ module.exports = function(app, env, passport) {
 				var resultArr = [];
 				var errorMessage;
 				var dailyStockData = result.body[resultDataType];
+				var stockObj;
 
 				if(dailyStockData) {
 					var stockDataKeys = Object.keys(dailyStockData);
@@ -57,8 +61,18 @@ module.exports = function(app, env, passport) {
 					for(var i = 0; i < numOfDays; i++) {
 						resultArr.push(dailyStockData[stockDataKeys[i]][stockDataFieldName]);
 					}
-					console.log(resultArr);
+
 					req.app.locals.stockData = resultArr;
+
+					stockObj = {
+						symbol: stockSymbol,
+						data: resultArr
+					};
+
+					// TODO: Check is stock obj already exists in array
+					stockArr.push(stockObj);
+					req.app.locals.stocks = stockArr;
+					console.log(stockArr);
 				}
 				else {
 					console.log("No Data Found for Symbol: " + stockSymbol);
@@ -66,6 +80,7 @@ module.exports = function(app, env, passport) {
 				}
 
 				res.render('pages/index', {
+					stocks: stockArr,
 					stockSymbols: stockSymbolArr,
 					stockData: resultArr,
 					searchError: errorMessage

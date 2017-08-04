@@ -18,41 +18,53 @@
 	<div id="stock-chart"></svg>
 
 	<script>
+		var height = 500;
+		var width = 500;
+
+		var x = d3.time.scale().range([0, width]);
+		var y = d3.scale.linear().range([0, height]);
+
+		var svg = d3.select('#stock-chart')
+			.append('svg')
+				.attr('height', height)
+				.attr('width', width);
+
+		var drawLine = d3.svg.line()
+			.x(function(d, i) { return (i * 50); })
+			.y(function(d, i) { return height - (d / 10); });
+
+		var stockArr = [];
 		<% if(stocks) { %>
 			<% for(var idx=0; idx < stocks.length; idx++) { %>
 				var stockData = [<%= stocks[idx].data %>];
-
-				var x = d3.time.scale().range([0, 500]);
-				var y = d3.scale.linear().range([1000, 0]);
-
-				var drawLine = d3.svg.line()
-					.x(function(d, i) { return (i * 50); })
-					.y(function(d, i) { return (d / 10); });
-
-				var svg = d3.select('#stock-chart')
-					.append('svg')
-						.attr('height', 1000)
-						.attr('width', 500);
-
+				stockArr.push(stockData);
+				/*
 				svg.append('path')
 					.attr('class', 'line')
 					.attr('d', drawLine(stockData))
 					.attr('stroke-width', 1)
 					.attr('stroke', 'black');
+				*/
+				
+			<% } %>
+			var scatterGroups = svg.selectAll('scatterPlotGroup')
+					.data(stockArr)
+					.enter()
+						.append('g')
+						.attr('class', 'scatterPlotGroup');
 
-				svg.selectAll('circle')
-					.data(stockData)
+			scatterGroups.selectAll('circle')
+					.data(function(d, i) { return d; })
 					.enter()
 						.append('circle')
 						.attr('cx', function(d, i) {
 							return (i * 50);
 						})
-						.attr('cy', function(d, i) {
-							console.log(stockData[i]);
-							return (stockData[i] / 10);
+						.attr('cy', function(d) {
+							console.log(d);
+							return height - (d / 10);
 						})
 						.attr('r', 3);
-			<% } %>
 		<% } %>
 	</script>
 </body>

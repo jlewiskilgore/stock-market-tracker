@@ -18,39 +18,41 @@
 	<div id="stock-chart"></svg>
 
 	<script>
-		<% if(stockData) { %>
-			var data = [<%= stockData %>];
+		<% if(stocks) { %>
+			<% for(var idx=0; idx < stocks.length; idx++) { %>
+				var stockData = [<%= stocks[idx].data %>];
 
-			var x = d3.time.scale().range([0, 500]);
-			var y = d3.scale.linear().range([1000, 0]);
+				var x = d3.time.scale().range([0, 500]);
+				var y = d3.scale.linear().range([1000, 0]);
 
-			var drawLine = d3.svg.line()
-				.x(function(d, i) { return (i * 50); })
-				.y(function(d, i) { return (d / 10); });
+				var drawLine = d3.svg.line()
+					.x(function(d, i) { return (i * 50); })
+					.y(function(d, i) { return (d / 10); });
 
-			var svg = d3.select('#stock-chart')
-				.append('svg')
-					.attr('height', 1000)
-					.attr('width', 500);
+				var svg = d3.select('#stock-chart')
+					.append('svg')
+						.attr('height', 1000)
+						.attr('width', 500);
 
-			svg.append('path')
-				.attr('class', 'line')
-				.attr('d', drawLine(data))
-				.attr('stroke-width', 1)
-				.attr('stroke', 'black');
+				svg.append('path')
+					.attr('class', 'line')
+					.attr('d', drawLine(stockData))
+					.attr('stroke-width', 1)
+					.attr('stroke', 'black');
 
-			svg.selectAll('circle')
-				.data(data)
-				.enter()
-					.append('circle')
-					.attr('cx', function(d, i) {
-						return (i * 50);
-					})
-					.attr('cy', function(d, i) {
-						console.log(data[i]);
-						return (data[i] / 10);
-					})
-					.attr('r', 3);
+				svg.selectAll('circle')
+					.data(stockData)
+					.enter()
+						.append('circle')
+						.attr('cx', function(d, i) {
+							return (i * 50);
+						})
+						.attr('cy', function(d, i) {
+							console.log(stockData[i]);
+							return (stockData[i] / 10);
+						})
+						.attr('r', 3);
+			<% } %>
 		<% } %>
 	</script>
 </body>

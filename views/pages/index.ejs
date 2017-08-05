@@ -18,7 +18,7 @@
 	<div id="stock-chart"></svg>
 
 	<script>
-		var height = 500;
+		var height = 600;
 		var width = 500;
 
 		var x = d3.time.scale().range([0, width]);
@@ -30,8 +30,8 @@
 				.attr('width', width);
 
 		var drawLine = d3.svg.line()
-			.x(function(d, i) { return (i * 50); })
-			.y(function(d, i) { return height - (d / 10); });
+			.x(function(d, i) { return ((i + 0.5) * 50); })
+			.y(function(d, i) { return (height - (d / 2)); });
 
 		var stockArr = [];
 		<% if(stocks) { %>
@@ -58,11 +58,11 @@
 					.enter()
 						.append('circle')
 						.attr('cx', function(d, i) {
-							return (i * 50);
+							return ((i + 0.5) * 50);
 						})
 						.attr('cy', function(d) {
 							console.log(d);
-							return height - (d / 10);
+							return (height - (d / 2));
 						})
 						.attr('r', 3);
 		<% } %>

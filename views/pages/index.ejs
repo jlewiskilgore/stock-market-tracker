@@ -37,13 +37,26 @@
 		var stockSymbolContainer = document.getElementById('stock-symbol-container');
 
 		var stockSymbolDiv;
+		var stockSymbolFormDiv;
+		var stockSymbolForm;
 
 		var stockArr = [];
 		<% if(stocks) { %>
 			<% for(var idx=0; idx < stocks.length; idx++) { %>
 				var stockSymbol = '<%= stocks[idx].symbol %>';
+				
 				stockSymbolDiv = document.createElement('div');
+				stockSymbolDiv.setAttribute('id', 'stock-symbol-div');
 				stockSymbolDiv.innerHTML = stockSymbol;
+
+				stockSymbolFormDiv = document.createElement('div');
+				stockSymbolFormDiv.setAttribute('id', 'stock-symbol-form');
+				stockSymbolFormDiv.innerHTML = 
+					'<form>' +
+					'<input type=\'submit\' value=\'X\'>' +
+					'</form>';
+
+				stockSymbolDiv.appendChild(stockSymbolFormDiv.firstChild);
 				stockSymbolContainer.appendChild(stockSymbolDiv);
 
 				var stockData = [<%= stocks[idx].data %>];
@@ -56,8 +69,6 @@
 					.attr('stroke-width', 1)
 					.attr('stroke', 'black');
 
-
-				
 			<% } %>
 			var scatterGroups = svg.selectAll('scatterPlotGroup')
 					.data(stockArr)

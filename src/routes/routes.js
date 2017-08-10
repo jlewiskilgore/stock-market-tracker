@@ -93,6 +93,13 @@ module.exports = function(app, env, passport) {
 		});
 	});
 
+	app.post('/deleteStockData', function(req, res) {
+		var appStocks = req.app.locals.stocks;
+		var stockSymbol = req.body.symbol;
+
+		console.log(stockSymbol);
+	});
+
 	app.get('*', function(req, res) {
 		res.redirect('/');
 	});

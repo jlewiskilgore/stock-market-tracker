@@ -52,9 +52,9 @@
 				stockSymbolFormDiv = document.createElement('div');
 				stockSymbolFormDiv.setAttribute('id', 'stock-symbol-form');
 				stockSymbolFormDiv.innerHTML = 
-					'<form action=\'/deleteStockData\' method=\'post\'>' +
+					'<form id=\'delete-stock-form\' action=\'/deleteStockData\' method=\'post\'>' +
 					'<input type=\'hidden\' name=\'symbol\' value=\'<%= stocks[idx].symbol %>\'>' +
-					'<input type=\'submit\' value=\'X\'>' +
+					'<input id=\'delete-stock-btn\' type=\'submit\' value=\'X\'>' +
 					'</form>';
 
 				stockSymbolDiv.appendChild(stockSymbolFormDiv.firstChild);

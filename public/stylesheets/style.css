@@ -25,3 +25,17 @@ body {
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
+
+#delete-stock-btn {
+	background-color: purple;
+	font-size: 45px;
+	color: lightgrey;
+	height: 50px;
+	width: 50px;
+	float: right;
+	margin-right: 25px;
+}
+
+#delete-stock-form {
+	display: inline;
+}

@@ -9,6 +9,17 @@ function stockController() {
 
 		callback(-1);
 	};
+
+	this.deleteStockBySymbol = function(stockArr, symbol, callback) {
+		console.log(stockArr);
+		console.log(symbol);
+
+		var updatedStockArr = stockArr.filter(function(obj) {
+			return obj.symbol !== symbol;
+		});
+
+		callback(updatedStockArr);
+	};
 }
 
 module.exports = new stockController();

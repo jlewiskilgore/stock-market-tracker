@@ -12,11 +12,10 @@ module.exports = function(app, env, passport) {
 	app.use(bodyParser.json());
 
 	app.get('/', function(req, res) {
-		var appStockData = req.app.locals.stockData;
 		var appStocks = req.app.locals.stocks;
+
 		res.render('pages/index', {
 			stocks: appStocks,
-			stockData: appStockData,
 			searchError: ''
 		});
 	});
@@ -27,13 +26,7 @@ module.exports = function(app, env, passport) {
 		var timeSeriesType = 'TIME_SERIES_DAILY';
 		var apiOutputSize = 'compact'
 		var stockSymbol = req.body.searchStockSymbol;
-		var stockSymbolArr = req.app.locals.stockSymbols || [];
 		var stockArr = req.app.locals.stocks || [];
-
-		if(!stockSymbolArr.includes(stockSymbol)) {
-			stockSymbolArr.push(stockSymbol);
-			req.app.locals.stockSymbols = stockSymbolArr;
-		}
 
 		var resultDataType = 'Time Series (Daily)';
 		var stockDataFieldName = '4. close';
@@ -63,8 +56,6 @@ module.exports = function(app, env, passport) {
 						resultArr.push(dailyStockData[stockDataKeys[i]][stockDataFieldName]);
 					}
 
-					req.app.locals.stockData = resultArr;
-
 					stockObj = {
 						symbol: stockSymbol,
 						data: resultArr
@@ -85,8 +76,6 @@ module.exports = function(app, env, passport) {
 
 				res.render('pages/index', {
 					stocks: stockArr,
-					stockSymbols: stockSymbolArr,
-					stockData: resultArr,
 					searchError: errorMessage
 				});
 			}
@@ -97,7 +86,14 @@ module.exports = function(app, env, passport) {
 		var appStocks = req.app.locals.stocks;
 		var stockSymbol = req.body.symbol;
 
-		console.log(stockSymbol);
+		StockCtrl.deleteStockBySymbol(appStocks, stockSymbol, function(result) {
+			console.log(result);
+			req.app.locals.stocks = result;
+			res.render('pages/index', {
+				stocks: result,
+				searchError: ''
+			});
+		});
 	});
 
 	app.get('*', function(req, res) {

@@ -47,7 +47,10 @@
 				
 				stockSymbolDiv = document.createElement('div');
 				stockSymbolDiv.setAttribute('id', 'stock-symbol-div');
-				stockSymbolDiv.innerHTML = stockSymbol;
+				stockSymbolDiv.innerHTML = 
+					'<div id=\'stock-symbol-text\'>' +
+					stockSymbol +
+					'</div>';
 
 				stockSymbolFormDiv = document.createElement('div');
 				stockSymbolFormDiv.setAttribute('id', 'stock-symbol-form');

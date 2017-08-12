@@ -31,7 +31,7 @@
 				.attr('width', width);
 
 		var drawLine = d3.svg.line()
-			.x(function(d, i) { return ((i + 0.5) * 50); })
+			.x(function(d, i) { return ((i + 2) * 15); })
 			.y(function(d, i) { return (height - (d / 2)); });
 
 		var stockSymbolContainer = document.getElementById('stock-symbol-container');
@@ -86,7 +86,7 @@
 					.enter()
 						.append('circle')
 						.attr('cx', function(d, i) {
-							return ((i + 0.5) * 50);
+							return ((i + 2) * 15);
 						})
 						.attr('cy', function(d) {
 							console.log(d);

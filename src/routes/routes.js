@@ -30,7 +30,7 @@ module.exports = function(app, env, passport) {
 
 		var resultDataType = 'Time Series (Daily)';
 		var stockDataFieldName = '4. close';
-		var numOfDays = 10; // Get stock data from last 10 days
+		var numOfDays = 30; // Get stock data from last 10 days
 
 		var apiFullUrl = 
 			apiBaseUrl 
